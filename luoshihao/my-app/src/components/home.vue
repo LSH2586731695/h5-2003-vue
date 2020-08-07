@@ -71,6 +71,10 @@
               <i class="el-icon-notebook-1"></i>
               <span>知识产权</span>
             </el-menu-item>
+            <el-menu-item index="/home/account">
+              <i class="el-icon-user"></i>
+              <span>我的账号</span>
+            </el-menu-item>
           </el-menu>
           <!-- 导航栏 结束-->
         </el-aside>

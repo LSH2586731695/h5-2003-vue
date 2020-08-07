@@ -12,6 +12,7 @@ import Statistics from "../components/statistics";
 import User from "../components/user";
 import Intellectual from "../components/intellectual";
 import Login from "../views/home/Login"
+import Account from "../components/account"
 Vue.use(VueRouter);
 
 const router = new VueRouter({
@@ -27,6 +28,11 @@ const router = new VueRouter({
         component: home
       }
         ,
+      {
+        path: "account",
+        name: "Account",
+        component: Account
+      } ,
       {
         path: "merchant",
         name: "Merchant",
@@ -76,20 +82,20 @@ const router = new VueRouter({
   ]
 });
 //  全局守卫
-// router.beforeEach((to, from, next) => {
-//   let token = sessionStorage.getItem('token');
-//   if (token) {
-//     next()
-//   } else {
-//     if (to.path === '/login') {
-//       next();
-//     } else {
-//       // 如果去的是其他页,跳转到登录页
-//       // 跳转到登录页
-//       return next({ "path": "/login" })
-//     }
-//   }
-// });
+router.beforeEach((to, from, next) => {
+  let token = sessionStorage.getItem('token');
+  if (token) {
+    next()
+  } else {
+    if (to.path === '/login') {
+      next();
+    } else {
+      // 如果去的是其他页,跳转到登录页
+      // 跳转到登录页
+      return next({ "path": "/login" })
+    }
+  }
+});
 const originalPush = VueRouter.prototype.push;
 VueRouter.prototype.push = function push(location) {
   return originalPush.call(this, location).catch(err => { })
