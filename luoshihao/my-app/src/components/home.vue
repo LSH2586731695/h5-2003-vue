@@ -25,7 +25,6 @@
             background-color="#f1f8fa"
             active-text-color="#333"
             :router="true"
-            
           >
             <el-menu-item index="/home">
               <i class="el-icon-s-home"></i>
@@ -69,7 +68,7 @@
             </el-menu-item>
             <el-menu-item index="/home/intellectual">
               <i class="el-icon-notebook-1"></i>
-              <span>知识产权</span>
+              <span>提交进度</span>
             </el-menu-item>
           </el-menu>
           <!-- 导航栏 结束-->
@@ -149,8 +148,8 @@ body {
 }
 
 .el-header {
-  background-color: rgb(241, 248, 250);
-  color: #333;
+  background-color: #24292e;
+  color:rgb(90, 141, 192);
   text-align: center;
   line-height: 60px;
   padding: 0 !important;
