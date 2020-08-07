@@ -107,6 +107,7 @@ export default {
           callback();
         }
       };
+      
     //这里存放数据
     return {
       imgUrl: require("@/assets/bg.jpg"),
