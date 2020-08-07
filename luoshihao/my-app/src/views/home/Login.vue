@@ -29,6 +29,7 @@
             ></el-input>
           </el-form-item>
         </el-form>
+        
         <button
           tag="button"
           class="el-button login-form_button el-button--primary is-round"
@@ -52,9 +53,19 @@
         <el-form-item label="账号" prop="user">
           <el-input v-model="ruleForm.user" prefix-icon="el-icon-user"></el-input>
         </el-form-item>
+
+         <el-form-item label="昵称" prop="id">
+          <el-input v-model="ruleForm.id" prefix-icon="el-icon-user-solid"></el-input>
+        </el-form-item>
+
         <el-form-item label="密码" prop="pass">
           <el-input v-model="ruleForm.pass" prefix-icon="el-icon-lock" show-password></el-input>
         </el-form-item>
+
+        <el-form-item label="重复密码" prop="repass">
+          <el-input v-model="ruleForm.repass" prefix-icon="el-icon-key" show-password></el-input>
+        </el-form-item>
+
       </el-form>
       <span slot="footer" class="dialog-footer">
         <el-button @click="dialogClick">取 消</el-button>
@@ -87,6 +98,16 @@ export default {
         }
       }, 100);
     };
+    var validatePass2 = (rule, value, callback) => {
+        if (value === '') {
+          callback(new Error('请确认密码'));
+        } else if (value !== this.ruleForm.pass) {
+          callback(new Error('密码不一致!'));
+        } else {
+          callback();
+        }
+      };
+      
     //这里存放数据
     return {
       imgUrl: require("@/assets/bg.jpg"),
@@ -96,7 +117,9 @@ export default {
       },
       ruleForm: {
         user: "",
+        id:"",
         pass: "",
+        repass:"",
       },
       formLabelWidth: "70px",
       dialogVisible: false,
@@ -113,10 +136,23 @@ export default {
       rules: {
         user: [
           { required: true, message: "请输入账号", trigger: "blur" },
-          { min: 6, max: 12, message: "长度在6到8个字符", trigger: "blur" },
+          { min: 6, max: 12, message: "长度在6到12个字", trigger: "blur" },
         ],
-        pass: [{ validator: checkPass, trigger: "change" }],
+        
+        id:[{required: true, message: "请输入昵称", trigger: "blur"},{ min: 2, max: 10, message: "长度在2到10个字", trigger: "blur" },],
+        
+        pass: [{required: true, message: "请输入密码", trigger: "blur"},{ validator: checkPass, trigger: "change" },{ validator: checkPass, trigger: "blur" }],
+
+        repass: [
+          {required: true, message: "请确认密码", trigger: "blur"},
+          { validator: checkPass, trigger: "change" },
+          { validator: checkPass, trigger: "blur" },
+          { validator: validatePass2, trigger: "change" },
+          { validator: validatePass2, trigger: "blur" }
+        ]
       },
+        
+
     };
   },
   //监听属性 类似于data概念
@@ -154,8 +190,11 @@ export default {
           });
           // localStorage.setItem('token', res.data.token);
           sessionStorage.setItem("token", res.data.token);
+          
 
           this.$router.push("/home");
+
+          this.store.commit('usernameinit',this.ruleForm.user)
         }
         if (res.data.code === 400) {
           this.$notify.error({
@@ -182,14 +221,30 @@ export default {
         });
         this.dialogVisible = false;
         return;
-      } else if (this.ruleForm.pass === "") {
+      }else if(this.ruleForm.id===""){
+         this.$notify.error({
+          title: "失败",
+          message: "请输入昵称",
+        });
+        this.dialogVisible = false;
+        return;
+      }
+       else if (this.ruleForm.pass === "") {
         this.$notify.error({
           title: "失败",
           message: "请输入密码",
         });
         this.dialogVisible = false;
         return;
+      }else if (this.ruleForm.repass === "") {
+        this.$notify.error({
+          title: "失败",
+          message: "请确认密码",
+        });
+        this.dialogVisible = false;
+        return;
       }
+
       this.$axios({
         url: "/register",
         method: "post",

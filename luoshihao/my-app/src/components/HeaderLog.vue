@@ -19,7 +19,7 @@
         </div>
       </div>
     </div>
-     <div class="app-span">啊翔</div>
+     <div class="app-span">{{uesrid}}</div>
   </div>
 </template>
 
@@ -38,7 +38,11 @@ export default {
     };
   },
   //监听属性 类似于data概念
-  computed: {},
+  computed: {
+    uesrid(){
+      return this.$store.state.id
+    }
+  },
   //监控data中的数据变化
   watch: {},
   //方法集合
